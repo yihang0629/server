@@ -86,4 +86,14 @@ module.exports = function(app){
     app.post('/findPhotoCommentPage', (req, res) => {
         controller.findPhotoCommentPage(req, res)
     })
+
+    // 分页查询用户列表
+    app.post('/findUserPage', (req, res) => {
+        controller.findUserPage(req, res)
+    })
+
+    // 更新用户状态
+    app.post('/updateUserStatus', (req, res) => {
+        controller.updateUserStatus(req, res)
+    })
 }

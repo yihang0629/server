@@ -61,7 +61,8 @@ exports.regUser = async(req, res) => {
     let data = req.body;
 
     await db.regUser([data.username, data.password])
-        .then(result => {
+        .then(async result => {
+            await db.regUserToUsers(data.username);
             res.send({
                 code:200,
                 message:result,
@@ -244,5 +245,32 @@ exports.findPhotoCommentPage = async(req, res) => {
                 code:200,
                 message:result,
             })
+        })
+}
+
+// 分页查询用户列表
+exports.findUserPage = async(req, res) => {
+    let data = req.body;
+    await db.findUserPage(data.page, data.pageSize, data.username, data.nickname, data.user_pic)
+        .then(result => {
+            const total = result[0][0] ? result[0][0].total : 0;
+            const users = result[1];
+            res.send({
+                code: 200,
+                data: users,
+                total: total
+            });
+        })
+}
+
+// 更新用户昵称
+exports.updateUserStatus = async(req, res) => {
+    let data = req.body;
+    await db.updateUserStatus(data.id, data.nickname)
+        .then(result => {
+            res.send({
+                code: 200,
+                message: '更新成功'
+            });
         })
 }
